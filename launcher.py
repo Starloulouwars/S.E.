@@ -50,12 +50,15 @@ while running:
         if microbe.is_alive():
             alive_microbes.append(microbe)
             microbe.draw()
+            if microbe.try_replication():  # Check if microbe should replicate
+                duplicate = microbe.replicate()  # Create a duplicate microbe
+                alive_microbes.append(duplicate)  # Add the duplicate to the list of living microbes
     microbes = alive_microbes  # Update the list of microbes
 
     for x in range(simulation.cells_x):
         for y in range(simulation.cells_y):
             if simulation.food[x][y] == 1:
-                pygame.draw.rect(screen, (255, 255, 255), (x * cellsize, y * cellsize, cellsize, cellsize))
+                pygame.draw.rect(screen, color["food_color"], (x * cellsize, y * cellsize, cellsize, cellsize))
                 # Check if any microbe is touching the food
                 for microbe in microbes:
                     if microbe.x // cellsize == x and microbe.y // cellsize == y:
