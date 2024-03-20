@@ -3,71 +3,61 @@ from read_colors import read_color_parameters
 from microbe import microbe
 from food import SimulatedEvolution
 
-#setup
+# Setup
 pygame.init()
 
-#declarations
+# Declarations
 size = 800
+width = 800
+height = 800
+cellsize = 2
+food_spawn_per_tick = 1
 fps = 60
 
-#color
+# Color
 read = read_color_parameters()
 read.readColors("color.ini")
 color = read.c
 
-#screen
-screen = pygame.display.set_mode((size,size))
+# Screen
+screen = pygame.display.set_mode((size, size))
 clock = pygame.time.Clock()
 running = True
 dt = 0
 
-# Création de microbes
-num_microbes = 1000
-microbes = [microbe(random.randint(0, size - 1), random.randint(0, size - 1), color["microbe_color"], 1, [(0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1)], screen) for _ in range(num_microbes)]
+# Create microbes
+num_microbes = 100
+microbes = [microbe(random.randint(0, size - 1), random.randint(0, size - 1), color["microbe_color"], 3, [(0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1)], screen) for _ in range(num_microbes)]
 
-# Création d'une instance de la classe SimulatedEvolution
-simulation = SimulatedEvolution({
-    "cv": {
-        "width": size,
-        "height": size
-    },
-    "cellsize": 2,
-    "food_spawn_per_tick": 1
-})
+# Create an instance of the SimulatedEvolution class
+simulation = SimulatedEvolution(width, height, cellsize, food_spawn_per_tick)
 
 running = True
-pause = False
 while running:
     for event in pygame.event.get():
-    #keys
         if event.type == pygame.QUIT:
-                running = False
-        
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_ESCAPE:
-                running = False
-                    
-        
-                    
-    screen.fill(color["ground_color"])
-    
-    # Déplacement et dessin de chaque microbe
+            running = False
+
+    screen.fill((0, 0, 0))
+
+    # Generate food
+    simulation.spawn_food(strategy=0)  # Change strategy as needed
+
     for microbe in microbes:
-        microbe.move(size, [(0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1)])
-        microbe.draw(screen)
-        
-    # Appel de la méthode spawn_food de l'instance de SimulatedEvolution
-    simulation.spawn_food(strategy=0)
-    
-    ## Dessin de la nourriture
+        microbe.move(size)
+        microbe.draw()
+
     for x in range(simulation.cells_x):
         for y in range(simulation.cells_y):
             if simulation.food[x][y] == 1:
-                pygame.draw.rect(screen, (255, 255, 255), (x * simulation.cfg["cellsize"], y * simulation.cfg["cellsize"], simulation.cfg["cellsize"], simulation.cfg["cellsize"]))
-
+                pygame.draw.rect(screen, (255, 255, 255), (x * cellsize, y * cellsize, cellsize, cellsize))
+                # Check if any microbe is touching the food
+                for microbe in microbes:
+                    if microbe.x // cellsize == x and microbe.y // cellsize == y:
+                        simulation.remove_food(x, y)  # Remove food if a microbe is touching it
 
     pygame.display.flip()
-    dt = clock.tick(fps)
-    
+    clock.tick(60)
+
 pygame.quit()
 sys.exit()

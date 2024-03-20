@@ -1,15 +1,16 @@
-import pygame, random, sys
-
 import random
+from microbe import microbe
 
 class SimulatedEvolution:
-    def __init__(self, cfg):
-        self.cfg = cfg  # Stocker le dictionnaire cfg comme attribut de l'instance
-        self.cells_x = int(cfg["cv"]["width"] / cfg["cellsize"])
-        self.cells_y = int(cfg["cv"]["height"] / cfg["cellsize"])
-        self.food_spawn_per_tick = cfg["food_spawn_per_tick"]
+    def __init__(self, width, height, cellsize, food_spawn_per_tick):
+        self.width = width
+        self.height = height
+        self.cellsize = cellsize
+        self.cells_x = int(width / cellsize)
+        self.cells_y = int(height / cellsize)
+        self.food_spawn_per_tick = food_spawn_per_tick
         self.food = [[0] * self.cells_y for _ in range(self.cells_x)]
-
+        self.microbes = []
 
     def put_food(self, x, y):
         self.food[x][y] = 1
@@ -75,14 +76,9 @@ class SimulatedEvolution:
         elif strategy == 2:
             self.spawn_food_box()
 
-# Example usage:
-cfg = {
-    "cv": {
-        "width": 800,
-        "height": 600
-    },
-    "cellsize": 2,
-    "food_spawn_per_tick": 1
-}
-simulation = SimulatedEvolution(cfg)
-simulation.spawn_food(strategy=0)  # Example: spawning food using normal strategy
+    def update_microbes(self, microbes):
+        for microbe in self.microbes:
+            microbe.move(self.width, self.height)
+            x, y = microbe.x // self.cellsize, microbe.y // self.cellsize
+            if self.food[x][y] == 1:
+                self.remove_food(x, y)  # Supprimer la nourriture si le microbe la mange
