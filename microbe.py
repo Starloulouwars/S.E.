@@ -20,10 +20,13 @@ class microbe:
             self.x = (self.x + dx) % size
             self.y = (self.y + dy) % size
             self.endurance -= 1  # Reduce endurance with each move
-
+    
     def eat_food(self, food):
         if self.x == food.x and self.y == food.y:  # Check if the microbe is on the same position as the food
             self.endurance += 40  # Increase endurance by 40 when eating food
 
     def draw(self):
         pygame.draw.rect(self.screen, self.color, (self.x, self.y, self.size, self.size))
+
+    def is_alive(self):
+        return self.endurance > 0

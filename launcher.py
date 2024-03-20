@@ -11,7 +11,7 @@ size = 800
 width = 800
 height = 800
 cellsize = 2
-food_spawn_per_tick = 1
+food_spawn_per_tick = 10
 fps = 60
 
 # Color
@@ -43,9 +43,14 @@ while running:
     # Generate food
     simulation.spawn_food(strategy=0)  # Change strategy as needed
 
+    # Move microbes, remove dead ones, and draw living ones
+    alive_microbes = []
     for microbe in microbes:
         microbe.move(size)
-        microbe.draw()
+        if microbe.is_alive():
+            alive_microbes.append(microbe)
+            microbe.draw()
+    microbes = alive_microbes  # Update the list of microbes
 
     for x in range(simulation.cells_x):
         for y in range(simulation.cells_y):
