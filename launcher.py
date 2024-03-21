@@ -32,16 +32,25 @@ microbes = [microbe(random.randint(0, size - 1), random.randint(0, size - 1), co
 # Create an instance of the SimulatedEvolution class
 simulation = SimulatedEvolution(width, height, cellsize, food_spawn_per_tick)
 
+mode = 0
 running = True
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+            
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_x:
+                mode = 0 #normal
+            if event.key == pygame.K_c:
+                mode = 1 #line
+            if event.key == pygame.K_v:
+                mode = 2 #box
 
     screen.fill((0, 0, 0))
 
     # Generate food
-    simulation.spawn_food(strategy=0)  # Change strategy as needed
+    simulation.spawn_food(strategy=mode)  # Change strategy as needed
 
     # Move microbes, remove dead ones, and draw living ones
     alive_microbes = []

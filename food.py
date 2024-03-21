@@ -13,7 +13,9 @@ class SimulatedEvolution:
         self.microbes = []
 
     def put_food(self, x, y):
-        self.food[x][y] = 1
+        x_index = int(x)
+        y_index = int(y)
+        self.food[x_index][y_index] = 1
 
     def remove_food(self, x, y):
         self.food[x][y] = 0
