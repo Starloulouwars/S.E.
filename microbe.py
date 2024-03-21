@@ -9,7 +9,7 @@ class microbe:
         self.color = color
         self.size = size
         self.directions = directions
-        self.endurance = 1500  # Initial endurance value
+        self.endurance = 1500 # Initial endurance value
         self.last_direction = None
 
     def direction_from_genes(self):
@@ -42,12 +42,10 @@ class microbe:
 
 
     def eat_food(self, food):
-        if self.x == food.x and self.y == food.y:  # Check if the microbe is on the same position as the food
-            self.endurance += 40  # Increase endurance by 40 when eating food
-            print("miam")
+            self.endurance += 40* food  # Increase endurance by 40 when eating food
 
     def try_replication(self):
-        if self.endurance > 1000 and random.random() < 0.005:  # Check if endurance is greater than 1000 and chance of replication
+        if self.endurance > 1000 and random.random() < 0.1:  # Check if endurance is greater than 1000 and chance of replication
             return True
         return False
 

@@ -14,10 +14,15 @@ class SimulatedEvolution:
     def put_food(self, x, y):
         x_index = int(x)
         y_index = int(y)
-        self.food[x_index][y_index] = 1
+        self.food[x_index][y_index] += 1
 
     def remove_food(self, x, y):
         self.food[x][y] = 0
+
+    def get_food(self, x, y):
+        x_index = int(x)
+        y_index = int(y)
+        return self.food[x_index][y_index]
 
     def spawn_food_normal(self):
         for _ in range(self.food_spawn_per_tick):

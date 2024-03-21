@@ -2,7 +2,6 @@ import pygame, random, sys
 from read_colors import read_color_parameters
 from microbe import microbe
 from food import SimulatedEvolution
-
 # Setup
 pygame.init()
 
@@ -13,7 +12,7 @@ height = 800
 cellsize = 3
 microbe_size=6
 food_spawn_per_tick = 1000
-fps = 60
+fps = 100
 
 # Color
 read = read_color_parameters()
@@ -27,7 +26,7 @@ running = True
 dt = 0
 
 # Create microbes
-num_microbes = 10
+num_microbes = 1
 microbes = [microbe(random.randint(0, size - 1), random.randint(0, size - 1), color["microbe_color"], microbe_size, [(0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1)], screen) for _ in range(num_microbes)]
 
 # Create an instance of the SimulatedEvolution class
@@ -71,7 +70,9 @@ while running:
                 pygame.draw.rect(screen, color["food_color"], (x * cellsize, y * cellsize, cellsize, cellsize))
                 # Check if any microbe is touching the food
                 for microbe in microbes:
+                    #print(microbe.endurance)
                     if microbe.x // cellsize == x and microbe.y // cellsize == y:
+                        microbe.eat_food(simulation.get_food(x, y) )
                         simulation.remove_food(x, y)  # Remove food if a microbe is touching it
 
     pygame.display.flip()
