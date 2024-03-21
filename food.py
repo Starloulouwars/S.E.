@@ -1,5 +1,4 @@
 import random
-from microbe import microbe
 
 class SimulatedEvolution:
     def __init__(self, width, height, cellsize, food_spawn_per_tick):

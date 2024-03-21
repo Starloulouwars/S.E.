@@ -10,8 +10,9 @@ pygame.init()
 size = 800
 width = 800
 height = 800
-cellsize = 2
-food_spawn_per_tick = 10
+cellsize = 3
+microbe_size=6
+food_spawn_per_tick = 1000
 fps = 60
 
 # Color
@@ -26,8 +27,8 @@ running = True
 dt = 0
 
 # Create microbes
-num_microbes = 100
-microbes = [microbe(random.randint(0, size - 1), random.randint(0, size - 1), color["microbe_color"], 3, [(0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1)], screen) for _ in range(num_microbes)]
+num_microbes = 10
+microbes = [microbe(random.randint(0, size - 1), random.randint(0, size - 1), color["microbe_color"], microbe_size, [(0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1)], screen) for _ in range(num_microbes)]
 
 # Create an instance of the SimulatedEvolution class
 simulation = SimulatedEvolution(width, height, cellsize, food_spawn_per_tick)

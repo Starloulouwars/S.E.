@@ -1,10 +1,8 @@
-import pygame
-import random
-import sys
-import math
+import pygame, random, sys, math
+from food import SimulatedEvolution
 
 class microbe:
-    def __init__(self, x, y, color, size, directions, screen):
+    def __init__(self, x, y, color, size, directions, screen,):
         self.screen = screen
         self.x = x
         self.y = y
@@ -46,9 +44,10 @@ class microbe:
     def eat_food(self, food):
         if self.x == food.x and self.y == food.y:  # Check if the microbe is on the same position as the food
             self.endurance += 40  # Increase endurance by 40 when eating food
+            print("miam")
 
     def try_replication(self):
-        if self.endurance > 1000 and random.random() < 0.05:  # Check if endurance is greater than 1000 and chance of replication
+        if self.endurance > 1000 and random.random() < 0.005:  # Check if endurance is greater than 1000 and chance of replication
             return True
         return False
 
